@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 @Autonomous(name = "TestAuto")
 public class TestAuto extends LinearOpMode {
@@ -12,12 +18,19 @@ public class TestAuto extends LinearOpMode {
     DcMotor fleft, fright, bright, bleft;
     Servo servo;
 
+    IMU imu;
+    public double imuDegree = 0;
+
     final int WHEEL_DIAMETER = 96;
     final double WHEEL_ENCODER_RESOLUTION = 384.5;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        imu = hardwareMap.get(IMU.class,"imu");
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
+        imu.initialize(new IMU.Parameters(orientation));
 
         fleft = hardwareMap.get(DcMotor.class, "fleft");
         fright = hardwareMap.get(DcMotor.class, "fright");
@@ -45,8 +58,24 @@ public class TestAuto extends LinearOpMode {
         // Step 3: Stop
 //        drivingForward(500, .2);
 
-        drivingForwardMM(1000,0.2);
+        //drivingForwardMM(1000,0.2);
+        while (opModeIsActive()) {
+            telemetry.addData("Heading",getHeading());
+            telemetry.update();
+        }
     }
+
+
+
+    public double getHeading() {
+//        double changeDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
+        double changeDegree = imu.getRobotYawPitchRollAngles().getYaw();
+        telemetry.addData("Change Degree",changeDegree);
+        imuDegree += changeDegree;
+        imu.resetYaw();
+        return imuDegree;
+    }
+
 
     public void waitTime (int time) {
         long targetTime = System.currentTimeMillis()+time;
@@ -58,7 +87,8 @@ public class TestAuto extends LinearOpMode {
 
         target += averageTicks();
         while (Math.abs(target-averageTicks()) > 5) {
-            int sign = (target-averageTicks())/Math.abs(target-averageTicks());
+            int currentDistance = target-averageTicks();
+            int sign = (currentDistance)/Math.abs(currentDistance);
             fleft.setPower(power*sign);
             fright.setPower(power*sign);
             bright.setPower(power*sign);
@@ -79,6 +109,10 @@ public class TestAuto extends LinearOpMode {
 
     public int averageTicks (){
         return (fleft.getCurrentPosition()+ fright.getCurrentPosition()+ bright.getCurrentPosition()+ bleft.getCurrentPosition())/4;
+    }
+
+    public void drivingForwardINCH(double targetInches, double power) {
+        drivingForwardMM((int) Math.round(targetInches/0.0394),power);
     }
 
     public void drivingForwardMM(int targetMillimeters, double power) {
