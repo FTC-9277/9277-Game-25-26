@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -13,7 +14,7 @@ public class TestTeleOp extends LinearOpMode {
 
     DcMotor fleft, fright, bright, bleft;
     DcMotorEx shooter;
-
+    CRServo servo;
     double shooterSpeed = 0;
 
     final int SEC_TO_SHOOTER_SPEED = 3;
@@ -32,7 +33,7 @@ public class TestTeleOp extends LinearOpMode {
         fright.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //adding servo
-
+    `   servo=hardwareMap.get(CRServo.class,"servo");
 
         //this is for testing of drive wheel
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
@@ -61,8 +62,14 @@ public class TestTeleOp extends LinearOpMode {
                 bleft.setPower(0);
             }
 
-
-
+            double intakeSpeed=0;
+            if (gamepad2.right_bumper){
+                intakeSpeed+=1;
+            }
+            if (gamepad2.left_bumper){
+                intakeSpeed-=1;
+            }
+            servo.setPower(intakeSpeed);
             if(gamepad2.b) {
 
                 if (time.seconds() <= SEC_TO_SHOOTER_SPEED){
