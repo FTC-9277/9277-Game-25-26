@@ -16,6 +16,9 @@ public class TestTeleOp extends LinearOpMode {
 
     double shooterSpeed = 0;
 
+    final int SEC_TO_SHOOTER_SPEED = 3;
+    final int MAX_LAUNCH_SPEED = 1600;
+
     public ElapsedTime time = new ElapsedTime();
 
     @Override
@@ -59,29 +62,32 @@ public class TestTeleOp extends LinearOpMode {
 
             if(gamepad2.b) {
 
-                if (time.seconds() <= 5){
-                    shooterSpeed = 320*time.seconds();
+                if (time.seconds() <= SEC_TO_SHOOTER_SPEED){
+                    telemetry.addData("slope",(double)(MAX_LAUNCH_SPEED  / SEC_TO_SHOOTER_SPEED));
+                    shooterSpeed = ((double) MAX_LAUNCH_SPEED  / SEC_TO_SHOOTER_SPEED)*time.seconds();
                     shooter.setVelocity(shooterSpeed);
                     telemetry.addData("Motor speed",shooter.getVelocity());
+                    telemetry.addData("Motor set speed", shooterSpeed);
                     telemetry.addData("Time", time);
+
 
                     telemetry.update();
                 } else {
-                    shooter.setVelocity(1600);
+                    shooter.setVelocity(MAX_LAUNCH_SPEED);
                 }
 
 
             } else if (gamepad2.a) {
 
-                if (time.seconds() <= 5){
-                    shooterSpeed = -320*time.seconds();
+                if (time.seconds() <= SEC_TO_SHOOTER_SPEED){
+                    shooterSpeed = -((double) MAX_LAUNCH_SPEED  / SEC_TO_SHOOTER_SPEED)*time.seconds();
                     shooter.setVelocity(shooterSpeed);
                     telemetry.addData("Motor speed",shooter.getVelocity());
                     telemetry.addData("Time", time);
 
                     telemetry.update();
                 } else {
-                    shooter.setVelocity(-1600);
+                    shooter.setVelocity(-MAX_LAUNCH_SPEED);
                 }
 
             } else {
