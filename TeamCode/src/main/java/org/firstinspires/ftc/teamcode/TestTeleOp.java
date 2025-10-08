@@ -31,6 +31,9 @@ public class TestTeleOp extends LinearOpMode {
         bright.setDirection(DcMotorSimple.Direction.REVERSE);
         fright.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        //adding servo
+
+
         //this is for testing of drive wheel
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         shooter.setVelocity(0);
