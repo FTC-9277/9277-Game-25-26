@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Servo Tele")
 
-class ServoTele extends LinearOpMode {
+public class ServoTele extends LinearOpMode {
 
     Servo testServo;
 
