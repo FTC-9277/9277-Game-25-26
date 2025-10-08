@@ -57,7 +57,7 @@ public class TestTeleOp extends LinearOpMode {
 
 
 
-            while(gamepad2.b) {
+            if(gamepad2.b) {
 
                 if (time.seconds() <= 5){
                     shooterSpeed = 320*time.seconds();
@@ -70,9 +70,25 @@ public class TestTeleOp extends LinearOpMode {
                     shooter.setVelocity(1600);
                 }
 
+
+            } else if (gamepad2.a) {
+
+                if (time.seconds() <= 5){
+                    shooterSpeed = -320*time.seconds();
+                    shooter.setVelocity(shooterSpeed);
+                    telemetry.addData("Motor speed",shooter.getVelocity());
+                    telemetry.addData("Time", time);
+
+                    telemetry.update();
+                } else {
+                    shooter.setVelocity(-1600);
+                }
+
+            } else {
+                time.reset();
+                shooter.setVelocity(0);
             }
-            time.reset();
-            shooter.setVelocity(0);
+
 
 
         }
