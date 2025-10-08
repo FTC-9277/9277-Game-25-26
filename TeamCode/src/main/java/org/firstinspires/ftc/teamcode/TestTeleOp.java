@@ -38,16 +38,16 @@ public class TestTeleOp extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()) {
             double speed=1;
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 speed = .25;
             }
 
 
-            if(Math.abs(gamepad2.left_stick_y) >= 0.2 || Math.abs(gamepad2.left_stick_x) >= 0.2 || Math.abs(gamepad2.right_stick_x) >= 0.2) {
-                fleft.setPower(speed * (gamepad2.left_stick_y-gamepad2.right_stick_x-gamepad2.left_stick_x));
-                fright.setPower(speed * (gamepad2.left_stick_y+gamepad2.right_stick_x+gamepad2.left_stick_x));
-                bright.setPower (speed * (gamepad2.left_stick_y+gamepad2.right_stick_x-gamepad2.left_stick_x));
-                bleft.setPower(speed * (gamepad2.left_stick_y-gamepad2.right_stick_x+gamepad2.left_stick_x));
+            if(Math.abs(gamepad1.left_stick_y) >= 0.2 || Math.abs(gamepad1.left_stick_x) >= 0.2 || Math.abs(gamepad1.right_stick_x) >= 0.2) {
+                fleft.setPower(speed * (gamepad1.left_stick_y-gamepad1.right_stick_x-gamepad1.left_stick_x));
+                fright.setPower(speed * (gamepad1.left_stick_y+gamepad1.right_stick_x+gamepad1.left_stick_x));
+                bright.setPower (speed * (gamepad1.left_stick_y+gamepad1.right_stick_x-gamepad1.left_stick_x));
+                bleft.setPower(speed * (gamepad1.left_stick_y-gamepad1.right_stick_x+gamepad1.left_stick_x));
             } else {
                 fleft.setPower(0);
                 fright.setPower(0);
