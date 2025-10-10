@@ -14,7 +14,7 @@ public class TestTeleOp extends LinearOpMode {
 
     DcMotor fleft, fright, bright, bleft;
     DcMotorEx shooter;
-    CRServo servo;
+    CRServo testServo;
     double shooterSpeed = 0;
 
     final int SEC_TO_SHOOTER_SPEED = 3;
@@ -33,7 +33,7 @@ public class TestTeleOp extends LinearOpMode {
         fright.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //adding servo
-    `   servo=hardwareMap.get(CRServo.class,"servo");
+        testServo = hardwareMap.get(CRServo.class,"servo");
 
         //this is for testing of drive wheel
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
@@ -69,7 +69,7 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper){
                 intakeSpeed-=1;
             }
-            servo.setPower(intakeSpeed);
+//            servo.setPower(intakeSpeed);
             if(gamepad2.b) {
 
                 if (time.seconds() <= SEC_TO_SHOOTER_SPEED){
@@ -105,6 +105,18 @@ public class TestTeleOp extends LinearOpMode {
                 shooter.setVelocity(0);
             }
 
+
+            // declareing servo rotation
+            if (gamepad1.x && gamepad1.left_bumper) {
+                testServo.setPower(1.0);
+
+            } else if (gamepad1.b) {
+                testServo.setPower(-1.0);
+            } else {
+                testServo.setPower(0.0);
+            }
+            telemetry.addData("servopower", testServo.getPower());
+            telemetry.update();
 
 
         }
