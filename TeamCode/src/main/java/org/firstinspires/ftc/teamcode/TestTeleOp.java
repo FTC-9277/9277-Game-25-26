@@ -42,6 +42,8 @@ public class TestTeleOp extends LinearOpMode {
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        testServo.setPosition(0.5);
+
         waitForStart();
         while(opModeIsActive()) {
             double speed=1;
