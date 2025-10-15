@@ -72,8 +72,12 @@ public class TestAuto extends LinearOpMode {
         // Step 3: Stop
 //        drivingForward(500, .2);
 
+        //This is the actual auto
+        drivingForwardMM(267, .5);
+        waitTime(670);
+        streftAndStrightMM(670,.5);
 
-        drivingForwardMM(500,0.1);
+
 //        while(opModeIsActive()) {
 //            while (opModeIsActive()) {
 //                telemetry.addData("Heading", getHeading());
@@ -99,7 +103,7 @@ public class TestAuto extends LinearOpMode {
         return imuDegree;
     }
 
-    public void turmBy(double Deg, double maxPower, double kP) {
+    public void turnBy(double Deg, double maxPower, double kP) {
         double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         double target = AngleUnit.normalizeDegrees(start+Deg);
 
@@ -139,9 +143,40 @@ public class TestAuto extends LinearOpMode {
         bleft.setVelocity(0);
 
     }
+    public void streftAndStright (int target, double velocity) {
+
+        //convert velocity to ticks
+
+
+
+        target += averageTicksFleftAndBright();
+        while (Math.abs(target-averageTicksFleftAndBright()) > 5 && opModeIsActive()) {
+            int currentDistance = target-averageTicksFleftAndBright();
+            int sign = (currentDistance)/Math.abs(currentDistance);
+            fleft.setVelocity(velocity*sign);
+            fright.setVelocity(velocity*-sign);
+            bright.setVelocity(velocity*sign);
+            bleft.setVelocity(velocity*-sign);
+
+            telemetry.addData("Encoder",averageTicksFleftAndBright());
+            telemetry.addData("Velocity",velocity*sign);
+            telemetry.update();
+
+        }
+
+        fleft.setVelocity(0);
+        fright.setVelocity(0);
+        bright.setVelocity(0);
+        bleft.setVelocity(0);
+
+    }
 
     public int averageTicks (){
         return (fleft.getCurrentPosition()+ fright.getCurrentPosition()+ bright.getCurrentPosition()+ bleft.getCurrentPosition())/4;
+    }
+
+    public int averageTicksFleftAndBright (){
+        return (fleft.getCurrentPosition()+ bright.getCurrentPosition())/2;
     }
 
     public void drivingForwardINCH(double targetInches, double velocity) {
@@ -156,6 +191,15 @@ public class TestAuto extends LinearOpMode {
 
         double ticksPerSec = ticksPerMeter * velocityMetersPerSec;
         drivingForward(targetTicks, ticksPerSec);
+    }
+    public void streftAndStrightMM(int targetMillimeters, double velocityMetersPerSec) {
+        double circumference = WHEEL_DIAMETER*Math.PI;
+        double ticksPerMilli = WHEEL_ENCODER_RESOLUTION/circumference;
+        double ticksPerMeter = ticksPerMilli * 1000;
+        int targetTicks = (int)(targetMillimeters*(ticksPerMilli) * (Math.sqrt(2)));
+
+        double ticksPerSec = ticksPerMeter * velocityMetersPerSec;
+        streftAndStright(targetTicks, ticksPerSec);
     }
     public void driveUntilMilli (int milli, double velocity) {
         fleft.setVelocity(velocity) ;
