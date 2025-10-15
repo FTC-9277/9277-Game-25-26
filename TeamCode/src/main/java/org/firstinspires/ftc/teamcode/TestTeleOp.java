@@ -18,7 +18,7 @@ public class TestTeleOp extends LinearOpMode {
     double shooterSpeed = 0;
 
     final int SEC_TO_SHOOTER_SPEED = 3;
-    final int MAX_LAUNCH_SPEED = 1600;
+    final int MAX_LAUNCH_SPEED = 1350;
 
     public ElapsedTime time = new ElapsedTime();
 
@@ -86,6 +86,8 @@ public class TestTeleOp extends LinearOpMode {
                     telemetry.update();
                 } else {
                     shooter.setVelocity(MAX_LAUNCH_SPEED);
+                    telemetry.addData("max speed", MAX_LAUNCH_SPEED);
+                    telemetry.update();
                 }
 
 

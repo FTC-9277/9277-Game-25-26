@@ -45,9 +45,9 @@ public class TestAuto extends LinearOpMode {
         fright = hardwareMap.get(DcMotorEx.class, "fright");
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
-        servo = hardwareMap.get(Servo.class, "serv");
-        bright.setDirection(DcMotorEx.Direction.REVERSE);
-        fright.setDirection(DcMotorEx.Direction.REVERSE);
+        servo = hardwareMap.get(Servo.class, "servo");
+        bleft.setDirection(DcMotorEx.Direction.REVERSE);
+        fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
         // Reset ALLLL of the encoders
         fright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -59,6 +59,11 @@ public class TestAuto extends LinearOpMode {
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
+
+        fright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         // steps!
 
@@ -67,14 +72,14 @@ public class TestAuto extends LinearOpMode {
         // Step 3: Stop
 //        drivingForward(500, .2);
 
-        while(opModeIsActive()) {
-            while (opModeIsActive()) {
-                telemetry.addData("Heading", getHeading());
-                telemetry.update();
-            }
-        }
 
-        //drivingForwardMM(1000,2000);
+        drivingForwardMM(500,0.1);
+//        while(opModeIsActive()) {
+//            while (opModeIsActive()) {
+//                telemetry.addData("Heading", getHeading());
+//                telemetry.update();
+//            }
+//        }
 
 
 
@@ -146,7 +151,7 @@ public class TestAuto extends LinearOpMode {
     public void drivingForwardMM(int targetMillimeters, double velocityMetersPerSec) {
         double circumference = WHEEL_DIAMETER*Math.PI;
         double ticksPerMilli = WHEEL_ENCODER_RESOLUTION/circumference;
-        double ticksPerMeter = ticksPerMilli / 1000;
+        double ticksPerMeter = ticksPerMilli * 1000;
         int targetTicks = (int)(targetMillimeters*(ticksPerMilli));
 
         double ticksPerSec = ticksPerMeter * velocityMetersPerSec;
