@@ -117,7 +117,6 @@ public class TestAuto extends LinearOpMode {
         return imuDegree;
     }
 
-
 //    public void turnBy(double Deg, double maxPower, double kP) {
 //        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 //        double target = AngleUnit.normalizeDegrees(start+Deg);
