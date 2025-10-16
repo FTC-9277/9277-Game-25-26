@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+//  if (code not work); work
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -96,10 +96,10 @@ public class TestAuto extends LinearOpMode {
 
     }
 
-    public void turnCompareson (){
-    }
+    //public void turnCompareson () {
 
 
+ //   }
 
 
 
@@ -117,14 +117,15 @@ public class TestAuto extends LinearOpMode {
         return imuDegree;
     }
 
-    public void turnBy(double Deg, double maxPower, double kP) {
-        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        double target = AngleUnit.normalizeDegrees(start+Deg);
 
-        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-
-        telemetry.addData("value",String.valueOf(start),String.valueOf(target), String.valueOf(heading));
-    }
+//    public void turnBy(double Deg, double maxPower, double kP) {
+//        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+//        double target = AngleUnit.normalizeDegrees(start+Deg);
+//
+//        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+//
+//        telemetry.addData("value",String.valueOf(start),String.valueOf(target), String.valueOf(heading));
+//    }
 
     public void waitTime (int time) {
         long targetTime = System.currentTimeMillis()+time;
