@@ -89,6 +89,20 @@ public class TestAuto extends LinearOpMode {
 
 
     }
+    //turning mech
+    public void turnByDegree () {
+
+        getHeading();
+
+    }
+
+    public void turnCompareson (){
+    }
+
+
+
+
+
 
     public double getHeading() {
 //        double changeDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
