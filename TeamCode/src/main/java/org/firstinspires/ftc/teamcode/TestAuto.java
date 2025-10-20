@@ -49,8 +49,21 @@ public class TestAuto extends LinearOpMode {
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // Reset ALLLL of the encoders
-        fright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         fleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,11 +85,6 @@ public class TestAuto extends LinearOpMode {
         // Step 3: Stop
 //        drivingForward(500, .2);
 
-        //This is the actual auto
-        drivingForwardMM(267, .5);
-        waitTime(670);
-        streftAndStrightMM(670,.5);
-
 
 //        while(opModeIsActive()) {
 //            while (opModeIsActive()) {
@@ -85,21 +93,20 @@ public class TestAuto extends LinearOpMode {
 //            }
 //        }
 
+        //This is the actual auto
+//        drivingForwardMM(267, .5);
+//        waitTime(670);
+//        streftAndStrightMM(670,.5);
+
+        turnBy(90.0, 67);
+        waitTime(1000);
+        turnBy(-90.0, 67);
+
+
 
 
 
     }
-    //turning mech
-    public void turnByDegree () {
-
-        getHeading();
-
-    }
-
-    //public void turnCompareson () {
-
-
- //   }
 
 
 
@@ -113,18 +120,27 @@ public class TestAuto extends LinearOpMode {
         telemetry.addData("Change Degree",changeDegree);
 
         imuDegree += changeDegree;
-        //imu.resetYaw();
+//        imu.resetYaw();
+        //double old = ang.getYaw(AngleUnit.DEGREES);
         return imuDegree;
     }
 
-//    public void turnBy(double Deg, double maxPower, double kP) {
-//        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-//        double target = AngleUnit.normalizeDegrees(start+Deg);
-//
-//        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-//
-//        telemetry.addData("value",String.valueOf(start),String.valueOf(target), String.valueOf(heading));
-//    }
+    public void turnBy(double deg, double maxPower) {
+        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        double target = AngleUnit.normalizeDegrees(start+deg);
+        int sign = (int)(deg/Math.abs(deg));
+
+        while (Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)) > 2){
+            fleft.setVelocity(maxPower*sign);
+            fright.setVelocity(maxPower*-sign);
+            bright.setVelocity(maxPower*-sign);
+            bleft.setVelocity(maxPower*sign);
+        }
+        fleft.setVelocity(0);
+        fright.setVelocity(0);
+        bright.setVelocity(0);
+        bleft.setVelocity(0);
+    }
 
     public void waitTime (int time) {
         long targetTime = System.currentTimeMillis()+time;
