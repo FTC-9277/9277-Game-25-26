@@ -94,13 +94,15 @@ public class TestAuto extends LinearOpMode {
 //        }
 
         //This is the actual auto
-//        drivingForwardMM(267, .5);
-//        waitTime(670);
-//        streftAndStrightMM(670,.5);
+        drivingForwardMM(267, .5);
+        waitTime(670);
+        streftAndStrightMM(670,.5);
+        waitTime(67);
+        turnBy(28.67,(670/2.0));
 
-        turnBy(90.0, 67);
-        waitTime(1000);
-        turnBy(-90.0, 67);
+//        turnBy(90.0, 670);
+//        waitTime(1000);
+//        turnBy(-90.0, 670);
 
 
 
@@ -127,14 +129,19 @@ public class TestAuto extends LinearOpMode {
 
     public void turnBy(double deg, double maxPower) {
         double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        double target = AngleUnit.normalizeDegrees(start+deg);
+        double target = AngleUnit.normalizeDegrees(start-deg);
         int sign = (int)(deg/Math.abs(deg));
 
-        while (Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)) > 2){
+        while (Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)) > 3 && opModeIsActive()){
+            telemetry.addData("start angle", start);
+            telemetry.addData("target angle", target);
+            telemetry.addData("current angle", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            telemetry.addData("Dist from target", Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
             fleft.setVelocity(maxPower*sign);
             fright.setVelocity(maxPower*-sign);
             bright.setVelocity(maxPower*-sign);
             bleft.setVelocity(maxPower*sign);
+            telemetry.update();
         }
         fleft.setVelocity(0);
         fright.setVelocity(0);
