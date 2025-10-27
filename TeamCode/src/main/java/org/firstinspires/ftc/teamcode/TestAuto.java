@@ -17,13 +17,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 @Autonomous(name = "TestAuto")
 public class TestAuto extends LinearOpMode {
 
-    DcMotorEx fleft, fright, bright, bleft;
+    DcMotorEx fleft, fright, bright, bleft, sorter;
     Servo servo;
 
     IMU imu;
     public double imuDegree = 0;
 
-
+    final double SORTER_ENCODER_RESOLUTION = 20;
 
     final int WHEEL_DIAMETER = 96;
     final double WHEEL_ENCODER_RESOLUTION = 384.5;
@@ -45,6 +45,7 @@ public class TestAuto extends LinearOpMode {
         fright = hardwareMap.get(DcMotorEx.class, "fright");
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
+        sorter = hardwareMap.get(DcMotorEx.class, "sorter");
         servo = hardwareMap.get(Servo.class, "servo");
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
@@ -63,20 +64,23 @@ public class TestAuto extends LinearOpMode {
 
 
 
-
+        fright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         fleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        sorter.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         fright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         fleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        sorter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
         fright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         // steps!
 
@@ -252,6 +256,33 @@ public class TestAuto extends LinearOpMode {
         bright.setVelocity(0) ;
     }
 
+    public void servoOpenDoor () {
+        //variable stores what turn it is
+        // just add one to a value
+        // if the value is 1, then do the first 60 deg rotation, close door, and it is set to original value
+        // if value 2, do second 60 deg rotation and open the door, move it slowly so that it can get the ball out
+        // if the value is 2, make it 0 so it restarts properly
+
+        // door thingies:
+        // when the 1 stuff happens, the door closes
+        // before the 2 stuff happen, the door opens
+    }
+
+    public int getSorterPosition(){
+        int ballPosition = 1;
+        int position = sorter.getCurrentPosition();
+        double scalePerTick = 360/SORTER_ENCODER_RESOLUTION;
+        double degree = (position * scalePerTick)%360;
+
+        //if less than 120 will be 1
+        //it is already 1
+        if (degree > 120 && degree <= 240) {
+            ballPosition = 2;
+        } else if (degree > 240 && degree <= 360) {
+            ballPosition = 3;
+        }
+        return ballPosition;
+    }
 
 
 
