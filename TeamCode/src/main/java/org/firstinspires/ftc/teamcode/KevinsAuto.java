@@ -5,25 +5,24 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name = "TestAuto")
-public class TestAuto extends LinearOpMode {
+public class KevinsAuto extends LinearOpMode {
 
     DcMotorEx fleft, fright, bright, bleft, sorter;
-    Servo servo;
+    Servo servoDoor;
 
     IMU imu;
     public double imuDegree = 0;
 
     final double SORTER_ENCODER_RESOLUTION = 20;
+    final double SORTER_SCALE_PER_TICK = 360/SORTER_ENCODER_RESOLUTION;
+    final double SORTER_TICKS_PER_120_DEG = 120*(SORTER_ENCODER_RESOLUTION/360);
 
     final int WHEEL_DIAMETER = 96;
     final double WHEEL_ENCODER_RESOLUTION = 384.5;
@@ -46,7 +45,7 @@ public class TestAuto extends LinearOpMode {
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
         sorter = hardwareMap.get(DcMotorEx.class, "sorter");
-        servo = hardwareMap.get(Servo.class, "servo");
+        servoDoor = hardwareMap.get(Servo.class, "servo");
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -256,23 +255,11 @@ public class TestAuto extends LinearOpMode {
         bright.setVelocity(0) ;
     }
 
-    public void servoOpenDoor () {
-        //variable stores what turn it is
-        // just add one to a value
-        // if the value is 1, then do the first 60 deg rotation, close door, and it is set to original value
-        // if value 2, do second 60 deg rotation and open the door, move it slowly so that it can get the ball out
-        // if the value is 2, make it 0 so it restarts properly
-
-        // door thingies:
-        // when the 1 stuff happens, the door closes
-        // before the 2 stuff happen, the door opens
-    }
 
     public int getSorterPosition(){
         int ballPosition = 1;
         int position = sorter.getCurrentPosition();
-        double scalePerTick = 360/SORTER_ENCODER_RESOLUTION;
-        double degree = (position * scalePerTick)%360;
+        double degree = (position * SORTER_SCALE_PER_TICK)%360;
 
         //if less than 120 will be 1
         //it is already 1
@@ -284,7 +271,35 @@ public class TestAuto extends LinearOpMode {
         return ballPosition;
     }
 
+    public void turnToPosition(int goalPosition){
+                                //finds ticks per deg
+                        //mult degrees to rotate
+        //this is the num of ticks in 120 deg
 
+//Kevin kevin our glorious leader and king
+//For him, nothing but praises we shall sing
+        // SupremeGod turnCount = KEVIN_KEVIN;
+        int ticksToTarget = 0;
+        if (getSorterPosition() < goalPosition){
+            ticksToTarget = (goalPosition-getSorterPosition());
+        } else if (getSorterPosition() > goalPosition){
+           ticksToTarget = (goalPosition+3-getSorterPosition());
+        }
+        ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
+
+        sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
+
+        //waits for motor to move to the position
+        while (getSorterPosition()!=goalPosition){
+        }
+
+    }
+
+    public void outputBall(){
+        servoDoor.setPosition(0.5);
+        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
+        servoDoor.setPosition(0.0);
+    }
 
 
 }
