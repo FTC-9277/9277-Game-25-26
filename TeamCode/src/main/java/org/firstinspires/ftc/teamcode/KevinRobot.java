@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 public class KevinRobot {
 
-    DcMotorEx fleft, fright, bright, bleft, sorter;
+    DcMotorEx fleft, fright, bright, bleft, sorter, shooter;
     Servo servoDoor;
-    HardwareMap hardwareMap = null;
-
+    HardwareMap hardwareMap;
+    LinearOpMode opMode;
 
     IMU imu;
     public double imuDegree = 0;
@@ -24,8 +30,10 @@ public class KevinRobot {
     final int WHEEL_DIAMETER = 96;
     final double WHEEL_ENCODER_RESOLUTION = 384.5;
 
-    public KevinRobot (HardwareMap hardwareMap) {
+    public KevinRobot (HardwareMap hardwareMap, LinearOpMode opMode) {
         this.hardwareMap = hardwareMap;
+        this.opMode = opMode;
+        initialize();
     }
 
     public void initialize() {
@@ -33,10 +41,7 @@ public class KevinRobot {
         RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
         imu.initialize(new IMU.Parameters(orientation));
 
-
         imu.resetYaw();
-
-
 
         fleft = hardwareMap.get(DcMotorEx.class, "fleft");
         fright = hardwareMap.get(DcMotorEx.class, "fright");
@@ -46,20 +51,6 @@ public class KevinRobot {
         servoDoor = hardwareMap.get(Servo.class, "servo");
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         fright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         fleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -79,6 +70,188 @@ public class KevinRobot {
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        shooter.setVelocity(0);
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
     }
+
+
+    public void turnBy(double deg, double maxPower) {
+        double start = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        double target = AngleUnit.normalizeDegrees(start-deg);
+        int sign = (int)(deg/Math.abs(deg));
+
+        while (Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)) > 3 && opMode.opModeIsActive()){
+            opMode.telemetry.addData("start angle", start);
+            opMode.telemetry.addData("target angle", target);
+            opMode.telemetry.addData("current angle", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            opMode.telemetry.addData("Dist from target", Math.abs(target-imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
+            fleft.setVelocity(maxPower*sign);
+            fright.setVelocity(maxPower*-sign);
+            bright.setVelocity(maxPower*-sign);
+            bleft.setVelocity(maxPower*sign);
+            opMode.telemetry.update();
+        }
+        fleft.setVelocity(0);
+        fright.setVelocity(0);
+        bright.setVelocity(0);
+        bleft.setVelocity(0);
+    }
+
+    public void drivingForward (int target, double velocity) {
+
+        //convert velocity to ticks
+
+
+
+        target += averageTicks();
+        while (Math.abs(target-averageTicks()) > 5 && opMode.opModeIsActive()) {
+            int currentDistance = target-averageTicks();
+            int sign = (currentDistance)/Math.abs(currentDistance);
+            fleft.setVelocity(velocity*sign);
+            fright.setVelocity(velocity*sign);
+            bright.setVelocity(velocity*sign);
+            bleft.setVelocity(velocity*sign);
+
+            opMode.telemetry.addData("Encoder",averageTicks());
+            opMode.telemetry.addData("Velocity",velocity*sign);
+            opMode.telemetry.update();
+
+        }
+
+        fleft.setVelocity(0);
+        fright.setVelocity(0);
+        bright.setVelocity(0);
+        bleft.setVelocity(0);
+
+    }
+    public void streftAndStright (int target, double velocity) {
+
+        //convert velocity to ticks
+
+
+
+        target += averageTicksFleftAndBright();
+        while (Math.abs(target-averageTicksFleftAndBright()) > 5 && opMode.opModeIsActive()) {
+            int currentDistance = target-averageTicksFleftAndBright();
+            int sign = (currentDistance)/Math.abs(currentDistance);
+            fleft.setVelocity(velocity*sign);
+            fright.setVelocity(velocity*-sign);
+            bright.setVelocity(velocity*sign);
+            bleft.setVelocity(velocity*-sign);
+
+            opMode.telemetry.addData("Encoder",averageTicksFleftAndBright());
+            opMode.telemetry.addData("Velocity",velocity*sign);
+            opMode.telemetry.update();
+
+        }
+
+        fleft.setVelocity(0);
+        fright.setVelocity(0);
+        bright.setVelocity(0);
+        bleft.setVelocity(0);
+
+    }
+
+
+    public int averageTicks (){
+        return (fleft.getCurrentPosition()+ fright.getCurrentPosition()+ bright.getCurrentPosition()+ bleft.getCurrentPosition())/4;
+    }
+
+    public int averageTicksFleftAndBright (){
+        return (fleft.getCurrentPosition()+ bright.getCurrentPosition())/2;
+    }
+
+    public void drivingForwardINCH(double targetInches, double velocity) {
+        drivingForwardMM((int) Math.round(targetInches/0.0394),velocity);
+    }
+
+    public void drivingForwardMM(int targetMillimeters, double velocityMetersPerSec) {
+        double circumference = WHEEL_DIAMETER*Math.PI;
+        double ticksPerMilli = WHEEL_ENCODER_RESOLUTION/circumference;
+        double ticksPerMeter = ticksPerMilli * 1000;
+        int targetTicks = (int)(targetMillimeters*(ticksPerMilli));
+
+        double ticksPerSec = ticksPerMeter * velocityMetersPerSec;
+        drivingForward(targetTicks, ticksPerSec);
+    }
+    public void streftAndStrightMM(int targetMillimeters, double velocityMetersPerSec) {
+        double circumference = WHEEL_DIAMETER*Math.PI;
+        double ticksPerMilli = WHEEL_ENCODER_RESOLUTION/circumference;
+        double ticksPerMeter = ticksPerMilli * 1000;
+        int targetTicks = (int)(targetMillimeters*(ticksPerMilli) * (Math.sqrt(2)));
+
+        double ticksPerSec = ticksPerMeter * velocityMetersPerSec;
+        streftAndStright(targetTicks, ticksPerSec);
+    }
+    public void driveUntilMilli (int milli, double velocity) {
+        fleft.setVelocity(velocity) ;
+        fright.setVelocity(velocity) ;
+        bright.setVelocity(velocity) ;
+        bleft.setVelocity(velocity) ;
+
+        waitTime(milli);
+
+        fleft.setVelocity(0) ;
+        fright.setVelocity(0) ;
+        bleft.setVelocity(0) ;
+        bright.setVelocity(0) ;
+    }
+
+
+    public int getSorterPosition(){
+        int ballPosition = 1;
+        int position = sorter.getCurrentPosition();
+        double degree = (position * SORTER_SCALE_PER_TICK)%360;
+
+        //if less than 120 will be 1
+        //it is already 1
+        if (degree > 120 && degree <= 240) {
+            ballPosition = 2;
+        } else if (degree > 240 && degree <= 360) {
+            ballPosition = 3;
+        }
+        return ballPosition;
+    }
+
+    public void turnToPosition(int goalPosition){
+        //finds ticks per deg
+        //mult degrees to rotate
+        //this is the num of ticks in 120 deg
+
+//Kevin kevin our glorious leader and king
+//For him, nothing but praises we shall sing
+        // SupremeGod turnCount = KEVIN_KEVIN;
+        int ticksToTarget = 0;
+        if (getSorterPosition() < goalPosition){
+            ticksToTarget = (goalPosition-getSorterPosition());
+        } else if (getSorterPosition() > goalPosition){
+            ticksToTarget = (goalPosition+3-getSorterPosition());
+        }
+        ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
+
+        sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
+
+        //waits for motor to move to the position
+        while (getSorterPosition()!=goalPosition){
+        }
+
+    }
+
+    public void outputBall(){
+        servoDoor.setPosition(0.5);
+        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
+        servoDoor.setPosition(0.0);
+    }
+
+    public void waitTime (int time) {
+        long targetTime = System.currentTimeMillis()+time;
+        while(opMode.opModeIsActive() && System.currentTimeMillis()<targetTime) {}
+    }
+
 
 }
