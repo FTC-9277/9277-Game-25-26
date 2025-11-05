@@ -1,3 +1,7 @@
+//Alex Alex, highest god of all
+//To oppose him, no one has the gall
+//Better than Ben, grayson, or Kevin
+//         *pause*         six seven
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -51,43 +55,43 @@ public class KevinsTeleop extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 intakeSpeed -= 1;
             }
-//            servo.setPower(intakeSpeed);
-            if (gamepad2.left_bumper) {
-
-                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-                    telemetry.addData("slope", (double) (MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED));
-                    shooterSpeed = ((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
-                    robot.shooter.setVelocity(shooterSpeed);
-                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
-                    telemetry.addData("Motor set speed", shooterSpeed);
-                    telemetry.addData("Time", time);
-
-
-                    telemetry.update();
-                } else {
-                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
-                    telemetry.addData("max speed", MAX_LAUNCH_SPEED);
-                    telemetry.update();
-                }
-
-
-            } else if (gamepad2.a) {
-
-                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-                    shooterSpeed = -((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
-                    robot.shooter.setVelocity(shooterSpeed);
-                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
-                    telemetry.addData("Time", time);
-
-                    telemetry.update();
-                } else {
-                    robot.shooter.setVelocity(-MAX_LAUNCH_SPEED);
-                }
-
-            } else {
-                time.reset();
-                robot.shooter.setVelocity(0);
-            }
+////            servo.setPower(intakeSpeed);
+//            if (gamepad2.left_bumper) {
+//
+//                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
+//                    telemetry.addData("slope", (double) (MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED));
+//                    shooterSpeed = ((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
+//                    robot.shooter.setVelocity(shooterSpeed);
+//                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
+//                    telemetry.addData("Motor set speed", shooterSpeed);
+//                    telemetry.addData("Time", time);
+//
+//
+//                    telemetry.update();
+//                } else {
+//                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
+//                    telemetry.addData("max speed", MAX_LAUNCH_SPEED);
+////                    telemetry.update();
+////                }
+//
+//
+//            } else if (gamepad2.a) {
+//
+//                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
+//                    shooterSpeed = -((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
+//                    robot.shooter.setVelocity(shooterSpeed);
+//                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
+//                    telemetry.addData("Time", time);
+//
+//                    telemetry.update();
+//                } else {
+//                    robot.shooter.setVelocity(-MAX_LAUNCH_SPEED);
+//                }
+//
+//            } else {
+//                time.reset();
+//                robot.shooter.setVelocity(0);
+//            }
 
 
         }

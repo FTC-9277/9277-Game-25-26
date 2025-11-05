@@ -15,8 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class KevinRobot {
 
-    DcMotorEx fleft, fright, bright, bleft, sorter, shooter;
-    Servo servoDoor;
+    DcMotorEx fleft, fright, bright, bleft; //, sorter, shooter;
+//    Servo servoDoor;
     HardwareMap hardwareMap;
     LinearOpMode opMode;
 
@@ -47,8 +47,8 @@ public class KevinRobot {
         fright = hardwareMap.get(DcMotorEx.class, "fright");
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
-        sorter = hardwareMap.get(DcMotorEx.class, "sorter");
-        servoDoor = hardwareMap.get(Servo.class, "servo");
+//        sorter = hardwareMap.get(DcMotorEx.class, "sorter");
+//        servoDoor = hardwareMap.get(Servo.class, "servo");
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -56,25 +56,25 @@ public class KevinRobot {
         fleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        sorter.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+ //       sorter.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         fright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         fleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        sorter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+ //       sorter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
         fright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
-        shooter.setVelocity(0);
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+//        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+//        shooter.setVelocity(0);
+//        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
@@ -203,50 +203,54 @@ public class KevinRobot {
     }
 
 
-    public int getSorterPosition(){
-        int ballPosition = 1;
-        int position = sorter.getCurrentPosition();
-        double degree = (position * SORTER_SCALE_PER_TICK)%360;
-
-        //if less than 120 will be 1
-        //it is already 1
-        if (degree > 120 && degree <= 240) {
-            ballPosition = 2;
-        } else if (degree > 240 && degree <= 360) {
-            ballPosition = 3;
-        }
-        return ballPosition;
-    }
-
-    public void turnToPosition(int goalPosition){
-        //finds ticks per deg
-        //mult degrees to rotate
-        //this is the num of ticks in 120 deg
-
-//Kevin kevin our glorious leader and king
-//For him, nothing but praises we shall sing
-        // SupremeGod turnCount = KEVIN_KEVIN;
-        int ticksToTarget = 0;
-        if (getSorterPosition() < goalPosition){
-            ticksToTarget = (goalPosition-getSorterPosition());
-        } else if (getSorterPosition() > goalPosition){
-            ticksToTarget = (goalPosition+3-getSorterPosition());
-        }
-        ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
-
-        sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
-
-        //waits for motor to move to the position
-        while (getSorterPosition()!=goalPosition){
-        }
-
-    }
-
-    public void outputBall(){
-        servoDoor.setPosition(0.5);
-        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
-        servoDoor.setPosition(0.0);
-    }
+//    public int getSorterPosition(){
+//        int ballPosition = 1;
+//        int position = sorter.getCurrentPosition();
+//        double degree = (position * SORTER_SCALE_PER_TICK)%360;
+//
+//        //if less than 120 will be 1
+//        //it is already 1
+//        if (degree > 120 && degree <= 240) {
+//            ballPosition = 2;
+//        } else if (degree > 240 && degree <= 360) {
+//            ballPosition = 3;
+//        }
+//        return ballPosition;
+//    }
+//
+//    public void turnToPosition(int goalPosition){
+//        //finds ticks per deg
+//        //mult degrees to rotate
+//        //this is the num of ticks in 120 deg
+//
+////Kevin kevin our glorious leader and king
+////For him, nothing but praises we shall sing
+////His code is always the best there is
+////Unlike the drive team; every shot's a miss
+////Kevin kevin's genius is skill, not luck
+////He carries, even though the drivers suck
+//        // SupremeGod turnCount = KEVIN_KEVIN;
+//        int ticksToTarget = 0;
+//        if (getSorterPosition() < goalPosition){
+//            ticksToTarget = (goalPosition-getSorterPosition());
+//        } else if (getSorterPosition() > goalPosition){
+//            ticksToTarget = (goalPosition+3-getSorterPosition());
+//        }
+//        ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
+//
+//        sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
+//
+//        //waits for motor to move to the position
+//        while (getSorterPosition()!=goalPosition){
+//        }
+//
+//    }
+//
+//    public void outputBall(){
+//        servoDoor.setPosition(0.5);
+//        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
+//        servoDoor.setPosition(0.0);
+//    }
 
     public void waitTime (int time) {
         long targetTime = System.currentTimeMillis()+time;

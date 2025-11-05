@@ -8,7 +8,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class KevinsAuto extends LinearOpMode {
 
     KevinRobot robot;
-
+//Benjamin Benjamin the god of CAD
+//He's so locked in the rest of us feel bad
+//His robot designs are done so well
+//However, the building team is hell
+//His CAD so good he leaves us in awe
+//But the build team is the worst I ever saw
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new KevinRobot(hardwareMap, this);
