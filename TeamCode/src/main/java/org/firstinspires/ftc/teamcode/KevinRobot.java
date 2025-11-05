@@ -251,6 +251,8 @@ public class KevinRobot {
 //        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
 //        servoDoor.setPosition(0.0);
 //    }
+//grayson grayson, demigod son of Kevin
+//After mastering code, he too shall ascend to heaven
 
     public void waitTime (int time) {
         long targetTime = System.currentTimeMillis()+time;
