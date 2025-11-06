@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class KevinRobot {
 
-    DcMotorEx fleft, fright, bright, bleft; //, sorter, shooter;
+    DcMotorEx fleft, fright, bright, bleft, shooter; //, sorter;
 //    Servo servoDoor;
     HardwareMap hardwareMap;
     LinearOpMode opMode;
@@ -70,11 +70,11 @@ public class KevinRobot {
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //
-//        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
-//        shooter.setVelocity(0);
-//        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        shooter.setVelocity(0);
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
