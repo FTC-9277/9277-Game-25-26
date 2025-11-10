@@ -16,17 +16,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class KevinsTeleop extends LinearOpMode {
     KevinRobot robot;
 
-    double shooterSpeed = 0;
 
-    final int SEC_TO_SHOOTER_SPEED = 3;
-    final int MAX_LAUNCH_SPEED = 1350;
-
-    public ElapsedTime time = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new KevinRobot(hardwareMap, this);
 
+        robot.shooter.setVelocity(0);
 
         waitForStart();
         while (opModeIsActive()) {
@@ -48,6 +44,8 @@ public class KevinsTeleop extends LinearOpMode {
                 robot.bleft.setPower(0);
             }
 
+
+            // intake mech
             double intakeSpeed = 0;
             if (gamepad2.right_bumper) {
                 intakeSpeed += 1;
@@ -56,45 +54,22 @@ public class KevinsTeleop extends LinearOpMode {
                 intakeSpeed -= 1;
             }
 //            servo.setPower(intakeSpeed);
+
+
+            // shooter mech
             if (gamepad2.left_bumper) {
 
-                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-                    telemetry.addData("slope", (double) (MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED));
-                    shooterSpeed = -((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
-                    robot.shooter.setVelocity(shooterSpeed);
-                    robot.shooter.setVelocity(shooterSpeed);
-                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
-                    telemetry.addData("Motor set speed", shooterSpeed);
-                    telemetry.addData("Time", time);
-
-
-                    telemetry.update();
-                } else {
-                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
-                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
-                    telemetry.addData("max speed", MAX_LAUNCH_SPEED);
-                    telemetry.update();
-                }
+                robot.shootBall();
 
 
             } else if (gamepad2.a) {
 
-                if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-                    shooterSpeed = -((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
-                    robot.shooter.setVelocity(shooterSpeed);
-                    robot.shooter.setVelocity(shooterSpeed);
-                    telemetry.addData("Motor speed", robot.shooter.getVelocity());
-                    telemetry.addData("Time", time);
-
-                    telemetry.update();
-                } else {
-                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
-                    robot.shooter.setVelocity(MAX_LAUNCH_SPEED);
-                }
+                robot.reverseBall();
 
             } else {
-                time.reset();
+                robot.time.reset();
                 robot.shooter.setVelocity(0);
+                robot.shooter2.setVelocity(0);
             }
 
 
