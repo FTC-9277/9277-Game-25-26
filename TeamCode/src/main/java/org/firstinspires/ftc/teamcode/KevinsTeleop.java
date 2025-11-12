@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -72,6 +73,20 @@ public class KevinsTeleop extends LinearOpMode {
                 robot.shooter2.setVelocity(0);
             }
 
+
+            robot.sorter.setPower(0.5);
+
+//            robot.sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(0.2,0.05,0.1,1));
+
+            if (gamepad2.xWasPressed()) {
+                robot.turnToPosition(robot.getSorterPosition()+1);
+//                robot.sorter.setTargetPosition(20);
+
+            }
+
+            telemetry.addData("target position", robot.sorter.getTargetPosition());
+            telemetry.addData("current position", robot.sorter.getCurrentPosition());
+            telemetry.update();
 
         }
 

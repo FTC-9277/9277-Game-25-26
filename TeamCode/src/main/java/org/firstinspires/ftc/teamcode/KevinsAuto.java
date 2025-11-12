@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-//  if (code not work); work
+//  if (code not work) work;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -28,19 +28,18 @@ public class KevinsAuto extends LinearOpMode {
 
         //Shoots all 3 balls loaded
         for (int i = 1; i <= 3; i++) {
-        robot.turnToPosition(i);
-        robot.outputBall();
-        robot.shootBall();
-
+            robot.turnToPosition(i);
+           //robot.outputBall();
+            robot.shootBall();
+            waitTime(67/*EDIT LATER*/);
+            robot.shooter.setVelocity(0);
+            robot.shooter2.setVelocity(0);
+        }
         robot.turnBy(-28.67, (670 / 2.0));
         waitTime(67);
         robot.streftAndStrightMM(-670, .5);
         waitTime(670);
         robot.drivingForwardMM(-267, .5);
-
-
-
-        }
     }
 
     public void waitTime (int time) {

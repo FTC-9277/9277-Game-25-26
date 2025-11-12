@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -17,14 +18,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class KevinRobot {
 
     DcMotorEx fleft, fright, bright, bleft, shooter, shooter2 , sorter;
-    Servo servoDoor;
+    //Servo servoDoor;
     HardwareMap hardwareMap;
     LinearOpMode opMode;
 
     IMU imu;
     public double imuDegree = 0;
 
-    final double SORTER_ENCODER_RESOLUTION = 20;
+    final double SORTER_ENCODER_RESOLUTION = 103.8;
     final double SORTER_SCALE_PER_TICK = 360/SORTER_ENCODER_RESOLUTION;
     final double SORTER_TICKS_PER_120_DEG = 120*(SORTER_ENCODER_RESOLUTION/360);
 
@@ -56,7 +57,7 @@ public class KevinRobot {
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
         sorter = hardwareMap.get(DcMotorEx.class, "sorter");
-        servoDoor = hardwareMap.get(Servo.class, "servo");
+        //servoDoor = hardwareMap.get(Servo.class, "servo");
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -69,14 +70,14 @@ public class KevinRobot {
         fleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        sorter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        sorter.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
 
         fright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         shooter.setVelocity(0);
@@ -252,19 +253,32 @@ public class KevinRobot {
         }
         ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
 
+        sorter.setPower(0.5);
         sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
+//        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients());
 
+        opMode.telemetry.addData("get sorter position", getSorterPosition());
+        opMode.telemetry.addData("get goal position", goalPosition);
+        opMode.telemetry.update();
         //waits for motor to move to the position
+        int count = 0;
         while (getSorterPosition()!=goalPosition){
+            opMode.telemetry.addData("get sorter position", getSorterPosition());
+            opMode.telemetry.addData("get goal position", goalPosition);
+            opMode.telemetry.addData("target position", sorter.getTargetPosition());
+            opMode.telemetry.addData("current position", sorter.getCurrentPosition());
+            opMode.telemetry.addData("count", count);
+            opMode.telemetry.update();
+            count++;
         }
 
     }
 
-    public void outputBall(){
-        servoDoor.setPosition(0.5);
-        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
-        servoDoor.setPosition(0.0);
-    }
+//    public void outputBall(){
+//        servoDoor.setPosition(0.5);
+//        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
+//        servoDoor.setPosition(0.0);
+//    }
 //grayson grayson, demigod son of Kevin
 //After mastering code, he too shall ascend to heaven
 
