@@ -46,14 +46,14 @@ public class KevinsTeleop extends LinearOpMode {
             }
 
 
-            // intake mech
-            double intakeSpeed = 0;
-            if (gamepad2.right_bumper) {
-                intakeSpeed += 1;
-            }
-            if (gamepad2.left_bumper) {
-                intakeSpeed -= 1;
-            }
+//            // intake mech
+//            double intakeSpeed = 0;
+//            if (gamepad2.right_bumper) {
+//                intakeSpeed += 1;
+//            }
+//            if (gamepad2.left_bumper) {
+//                intakeSpeed -= 1;
+//            }
 //            servo.setPower(intakeSpeed);
 
 
@@ -74,9 +74,11 @@ public class KevinsTeleop extends LinearOpMode {
             }
 
 
-            robot.sorter.setPower(0.5);
+            //robot.sorter.setPower(0.5);
 
-//            robot.sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(0.2,0.05,0.1,1));
+            robot.sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(5,.05,0,0));
+            robot.sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //This maybe work??????
 
             if (gamepad2.xWasPressed()) {
                 robot.turnToPosition(robot.getSorterPosition()+1);
@@ -86,6 +88,7 @@ public class KevinsTeleop extends LinearOpMode {
 
             telemetry.addData("target position", robot.sorter.getTargetPosition());
             telemetry.addData("current position", robot.sorter.getCurrentPosition());
+            telemetry.addData("PID", robot.sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.update();
 
         }

@@ -70,6 +70,7 @@ public class KevinRobot {
         fleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        sorter.setTargetPosition(0);
         sorter.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
 
@@ -253,7 +254,7 @@ public class KevinRobot {
         }
         ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
 
-        sorter.setPower(0.5);
+        sorter.setPower(0.1);
         sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients());
 
@@ -271,7 +272,8 @@ public class KevinRobot {
             opMode.telemetry.update();
             count++;
         }
-
+        opMode.telemetry.addData("completion", ticksToTarget);
+        opMode.telemetry.update();
     }
 
 //    public void outputBall(){
