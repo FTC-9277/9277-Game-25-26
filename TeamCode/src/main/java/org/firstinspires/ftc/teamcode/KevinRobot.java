@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class KevinRobot {
 
     DcMotorEx fleft, fright, bright, bleft, shooter, shooter2 , sorter;
-    //Servo servoDoor;
+    Servo servoDoor;
     HardwareMap hardwareMap;
     LinearOpMode opMode;
 
@@ -34,7 +34,7 @@ public class KevinRobot {
 
     double shooterSpeed = 0;
 
-    final int SEC_TO_SHOOTER_SPEED = 3;
+    final int SEC_TO_SHOOTER_SPEED = 4;
     final int MAX_LAUNCH_SPEED = 1350;
 
     public ElapsedTime time = new ElapsedTime();
@@ -57,9 +57,11 @@ public class KevinRobot {
         bright = hardwareMap.get(DcMotorEx.class, "bright");
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
         sorter = hardwareMap.get(DcMotorEx.class, "sorter");
-        //servoDoor = hardwareMap.get(Servo.class, "servo");
+        servoDoor = hardwareMap.get(Servo.class, "servo");
+        servoDoor.setPosition(.17);
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
+
 
         fright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         fleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,7 +73,7 @@ public class KevinRobot {
         bright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         sorter.setTargetPosition(0);
-        sorter.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        sorter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
         fright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -85,14 +87,14 @@ public class KevinRobot {
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
         shooter2.setVelocity(0);
         shooter2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooter2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
+        shooter.setDirection(DcMotorEx.Direction.REVERSE);
+        shooter2.setDirection(DcMotorEx.Direction.REVERSE);
+        time.reset();
     }
 
 
@@ -254,21 +256,29 @@ public class KevinRobot {
         }
         ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
 
-        sorter.setPower(0.1);
+        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, .05, 0,0));
         sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
+        sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        sorter.setPower(0.75);
+       // sorter.setPositionPIDFCoefficients(15);
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients());
 
         opMode.telemetry.addData("get sorter position", getSorterPosition());
         opMode.telemetry.addData("get goal position", goalPosition);
+        opMode.telemetry.addData("PID", sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
         opMode.telemetry.update();
         //waits for motor to move to the position
         int count = 0;
-        while (getSorterPosition()!=goalPosition){
+//        while (getSorterPosition()!=goalPosition && opMode.opModeIsActive()){
+        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 5 && opMode.opModeIsActive()){
             opMode.telemetry.addData("get sorter position", getSorterPosition());
             opMode.telemetry.addData("get goal position", goalPosition);
             opMode.telemetry.addData("target position", sorter.getTargetPosition());
             opMode.telemetry.addData("current position", sorter.getCurrentPosition());
             opMode.telemetry.addData("count", count);
+            opMode.telemetry.addData("power", sorter.getPower());
+            opMode.telemetry.addData("angle", (sorter.getCurrentPosition()* SORTER_SCALE_PER_TICK)%360);
+            opMode.telemetry.addData("PID", sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             opMode.telemetry.update();
             count++;
         }
@@ -276,9 +286,9 @@ public class KevinRobot {
         opMode.telemetry.update();
     }
 
-//    public void outputBall(){
-//        servoDoor.setPosition(0.5);
-//        sorter.setTargetPosition((int) (sorter.getCurrentPosition() + SORTER_TICKS_PER_120_DEG));
+//    public void openDoor(){
+//        servoDoor.setPosition(0);
+//        waitTime()
 //        servoDoor.setPosition(0.0);
 //    }
 //grayson grayson, demigod son of Kevin
@@ -308,6 +318,7 @@ public class KevinRobot {
         }
 
     }
+
     public void reverseBall () {
 
         if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {

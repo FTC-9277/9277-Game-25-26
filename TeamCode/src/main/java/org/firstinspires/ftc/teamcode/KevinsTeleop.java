@@ -57,38 +57,30 @@ public class KevinsTeleop extends LinearOpMode {
 //            servo.setPower(intakeSpeed);
 
 
-            // shooter mech
-            if (gamepad2.left_bumper) {
 
-                robot.shootBall();
-
-
-            } else if (gamepad2.a) {
-
-                robot.reverseBall();
-
-            } else {
-                robot.time.reset();
-                robot.shooter.setVelocity(0);
-                robot.shooter2.setVelocity(0);
+            if (gamepad2.a) {
+                robot.servoDoor.setPosition(0);
+              }  else {
+                robot.servoDoor.setPosition(.17);
             }
 
-
-            //robot.sorter.setPower(0.5);
-
-            robot.sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(5,.05,0,0));
-            robot.sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            //This maybe work??????
+            if (gamepad2.y){
+                robot.shootBall();
+            } else {
+                robot.shooter.setVelocity(0);
+                robot.shooter2.setVelocity(0);
+                robot.time.reset();
+            }
 
             if (gamepad2.xWasPressed()) {
-                robot.turnToPosition(robot.getSorterPosition()+1);
+                robot.turnToPosition((robot.getSorterPosition()+1) % 3);
 //                robot.sorter.setTargetPosition(20);
 
             }
 
             telemetry.addData("target position", robot.sorter.getTargetPosition());
             telemetry.addData("current position", robot.sorter.getCurrentPosition());
-            telemetry.addData("PID", robot.sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+
             telemetry.update();
 
         }

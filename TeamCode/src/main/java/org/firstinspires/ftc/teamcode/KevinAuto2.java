@@ -4,11 +4,11 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "TestAuto")
-public class KevinsAuto extends LinearOpMode {
+@Autonomous(name = "TestAuto2")
+public class KevinAuto2 extends LinearOpMode {
 
     KevinRobot robot;
-//Benjamin Benjamin the god of CAD
+    //Benjamin Benjamin the god of CAD
 //He's so locked in the rest of us feel bad
 //His robot designs are done so well
 //However, the building team is hell
@@ -22,9 +22,9 @@ public class KevinsAuto extends LinearOpMode {
         //This is the actual auto
         robot.drivingForwardMM(267, .5);
         waitTime(670);
-        robot.streftAndStrightMM(670, .5);
+        robot.streftAndStrightMM(-670, .5);
         waitTime(67);
-        robot.turnBy(28.67, (670 / 2.0));
+        robot.turnBy(-28.67, (670 / 2.0));
 
         //Shoots all 3 balls loaded
         for (int i = 1; i <= 3; i++) {
@@ -37,9 +37,9 @@ public class KevinsAuto extends LinearOpMode {
             robot.shooter.setVelocity(0);
             robot.shooter2.setVelocity(0);
         }
-        robot.turnBy(-28.67, (670 / 2.0));
+        robot.turnBy(28.67, (670 / 2.0));
         waitTime(67);
-        robot.streftAndStrightMM(-670, .5);
+        robot.streftAndStrightMM(670, .5);
         waitTime(670);
         robot.drivingForwardMM(-267, .5);
     }
