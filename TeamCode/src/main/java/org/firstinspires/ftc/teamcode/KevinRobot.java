@@ -2,17 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class KevinRobot {
@@ -25,7 +22,7 @@ public class KevinRobot {
     IMU imu;
     public double imuDegree = 0;
 
-    final double SORTER_ENCODER_RESOLUTION = 103.8;
+    final double SORTER_ENCODER_RESOLUTION = 384.5;
     final double SORTER_SCALE_PER_TICK = 360/SORTER_ENCODER_RESOLUTION;
     final double SORTER_TICKS_PER_120_DEG = 120*(SORTER_ENCODER_RESOLUTION/360);
 
@@ -34,8 +31,11 @@ public class KevinRobot {
 
     double shooterSpeed = 0;
 
+    boolean emergencyButtonPressed;
+
     final int SEC_TO_SHOOTER_SPEED = 4;
-    final int MAX_LAUNCH_SPEED = 1350;
+    //Not constant because auto and teleop use different speeds
+    int maxLaunchSpeed = 1175;
 
     public ElapsedTime time = new ElapsedTime();
 
@@ -85,12 +85,12 @@ public class KevinRobot {
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         shooter.setVelocity(0);
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
         shooter2.setVelocity(0);
         shooter2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         shooter.setDirection(DcMotorEx.Direction.REVERSE);
         shooter2.setDirection(DcMotorEx.Direction.REVERSE);
@@ -236,6 +236,20 @@ public class KevinRobot {
         return ballPosition;
     }
 
+    public void adjustSorterDown(){
+//        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
+        sorter.setTargetPosition(sorter.getCurrentPosition()-15);
+        sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        sorter.setPower(0.1);
+    }
+
+    public void adjustSorterUp(){
+//        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
+        sorter.setTargetPosition(sorter.getCurrentPosition()+15);
+        sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        sorter.setPower(0.1);
+    }
+
     public void turnToPosition(int goalPosition){
         //finds ticks per deg
         //mult degrees to rotate
@@ -256,10 +270,10 @@ public class KevinRobot {
         }
         ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
 
-        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, .05, 0,0));
+        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
         sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
         sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        sorter.setPower(0.75);
+        sorter.setPower(0.5);
        // sorter.setPositionPIDFCoefficients(15);
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients());
 
@@ -279,8 +293,15 @@ public class KevinRobot {
             opMode.telemetry.addData("power", sorter.getPower());
             opMode.telemetry.addData("angle", (sorter.getCurrentPosition()* SORTER_SCALE_PER_TICK)%360);
             opMode.telemetry.addData("PID", sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            opMode.telemetry.addData("button", opMode.gamepad2.b);
+
             opMode.telemetry.update();
             count++;
+
+            if (opMode.gamepad2.b){
+
+                break;
+            }
         }
         opMode.telemetry.addData("completion", ticksToTarget);
         opMode.telemetry.update();
@@ -302,8 +323,8 @@ public class KevinRobot {
     public void shootBall () {
 
         if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-            opMode.telemetry.addData("slope", (double) (MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED));
-            shooterSpeed = ((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
+            opMode.telemetry.addData("slope", (double) (maxLaunchSpeed / SEC_TO_SHOOTER_SPEED));
+            shooterSpeed = ((double) maxLaunchSpeed / SEC_TO_SHOOTER_SPEED) * time.seconds();
             shooter.setVelocity(shooterSpeed);
             shooter2.setVelocity(shooterSpeed);
             opMode.telemetry.addData("Motor speed", shooter.getVelocity());
@@ -311,9 +332,9 @@ public class KevinRobot {
             opMode.telemetry.addData("Time", time);
 
         }else {
-            shooter.setVelocity(MAX_LAUNCH_SPEED);
-            shooter2.setVelocity(MAX_LAUNCH_SPEED);
-            opMode.telemetry.addData("max speed", MAX_LAUNCH_SPEED);
+            shooter.setVelocity(maxLaunchSpeed);
+            shooter2.setVelocity(maxLaunchSpeed);
+            opMode.telemetry.addData("max speed", maxLaunchSpeed);
             opMode.telemetry.update();
         }
 
@@ -322,7 +343,7 @@ public class KevinRobot {
     public void reverseBall () {
 
         if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
-            shooterSpeed = -((double) MAX_LAUNCH_SPEED / SEC_TO_SHOOTER_SPEED) * time.seconds();
+            shooterSpeed = -((double) maxLaunchSpeed / SEC_TO_SHOOTER_SPEED) * time.seconds();
             shooter.setVelocity(shooterSpeed);
             shooter2.setVelocity(shooterSpeed);
             opMode.telemetry.addData("Motor speed", shooter.getVelocity());
@@ -330,8 +351,8 @@ public class KevinRobot {
 
             opMode.telemetry.update();
         } else {
-            shooter.setVelocity(MAX_LAUNCH_SPEED);
-            shooter2.setVelocity(MAX_LAUNCH_SPEED);
+            shooter.setVelocity(maxLaunchSpeed);
+            shooter2.setVelocity(maxLaunchSpeed);
         }
     }
 

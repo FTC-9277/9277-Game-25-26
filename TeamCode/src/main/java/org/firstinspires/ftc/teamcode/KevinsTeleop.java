@@ -34,10 +34,10 @@ public class KevinsTeleop extends LinearOpMode {
 
 
             if (Math.abs(gamepad1.left_stick_y) >= 0.2 || Math.abs(gamepad1.left_stick_x) >= 0.2 || Math.abs(gamepad1.right_stick_x) >= 0.2) {
-                robot.fleft.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x));
-                robot.fright.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x));
-                robot.bright.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x));
-                robot.bleft.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x));
+                robot.fleft.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x));
+                robot.fright.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x));
+                robot.bright.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x));
+                robot.bleft.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x));
             } else {
                 robot.fleft.setPower(0);
                 robot.fright.setPower(0);
@@ -58,13 +58,13 @@ public class KevinsTeleop extends LinearOpMode {
 
 
 
-            if (gamepad2.a) {
+            if (gamepad2.right_bumper) {
                 robot.servoDoor.setPosition(0);
               }  else {
                 robot.servoDoor.setPosition(.17);
             }
 
-            if (gamepad2.y){
+            if (gamepad2.left_bumper){
                 robot.shootBall();
             } else {
                 robot.shooter.setVelocity(0);
@@ -77,6 +77,18 @@ public class KevinsTeleop extends LinearOpMode {
 //                robot.sorter.setTargetPosition(20);
 
             }
+
+            if (gamepad2.dpadDownWasPressed()){
+                robot.adjustSorterDown();
+            }
+
+            if (gamepad2.dpadUpWasPressed()){
+                robot.adjustSorterUp();
+            }
+
+            //if (gamepad2.bWasPressed()){
+               // robot.emergencyButtonPressed=true;
+           //
 
             telemetry.addData("target position", robot.sorter.getTargetPosition());
             telemetry.addData("current position", robot.sorter.getCurrentPosition());

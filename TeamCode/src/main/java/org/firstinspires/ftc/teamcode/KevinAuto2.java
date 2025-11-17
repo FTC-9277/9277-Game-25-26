@@ -22,24 +22,24 @@ public class KevinAuto2 extends LinearOpMode {
         //This is the actual auto
         robot.drivingForwardMM(267, .5);
         waitTime(670);
-        robot.streftAndStrightMM(-670, .5);
+        robot.streftAndStrightMM(-(670+90), .5);
         waitTime(67);
-        robot.turnBy(-28.67, (670 / 2.0));
+        robot.turnBy(28.67, (670 / 2.0));
 
         //Shoots all 3 balls loaded
         for (int i = 1; i <= 3; i++) {
-            robot.turnToPosition(i);
             robot.servoDoor.setPosition(0);
-            waitTime(670);
-            robot.servoDoor.setPosition(.17);
+            robot.maxLaunchSpeed=1650;
             robot.shootBall();
-            waitTime(67/*EDIT LATER*/);
-            robot.shooter.setVelocity(0);
-            robot.shooter2.setVelocity(0);
+            robot.turnToPosition(i);
+            waitTime(1067);
         }
-        robot.turnBy(28.67, (670 / 2.0));
+        robot.shooter.setVelocity(0);
+        robot.shooter2.setVelocity(0);
+        robot.servoDoor.setPosition(.17);
+        robot.turnBy(-28.67, (670 / 2.0));
         waitTime(67);
-        robot.streftAndStrightMM(670, .5);
+        robot.streftAndStrightMM((670+90), .5);
         waitTime(670);
         robot.drivingForwardMM(-267, .5);
     }
