@@ -4,7 +4,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "TestAuto")
+@Autonomous(name = "TestBlueFrontAuto")
 public class KevinsAuto extends LinearOpMode {
 
     KevinRobot robot;
@@ -20,28 +20,12 @@ public class KevinsAuto extends LinearOpMode {
         waitForStart();
 
         //This is the actual auto
-        robot.drivingForwardMM(267, .5);
-        waitTime(670);
-        robot.streftAndStrightMM((670+90), .5);
-        waitTime(67);
-        robot.turnBy(-28.67, (670 / 2.0));
+        robot.drivingForwardMM(1567,0.5);
+        robot.turnBy(180,0.5);
+        robot.streftAndStrightMM(-300, 0.3);
 
-        //Shoots all 3 balls loaded
-        for (int i = 1; i <= 3; i++) {
-            robot.servoDoor.setPosition(0);
-            robot.maxLaunchSpeed=1650;
-            robot.shootBall();
-            robot.turnToPosition(i);
-            waitTime(1067);
-        }
-        robot.shooter.setVelocity(0);
-        robot.shooter2.setVelocity(0);
-        robot.servoDoor.setPosition(.17);
-        robot.turnBy(28.67, (670 / 2.0));
-        waitTime(67);
-        robot.streftAndStrightMM(-(670+90), .5);
-        waitTime(670);
-        robot.drivingForwardMM(-267, .5);
+        //robot shoot
+
     }
 
     public void waitTime (int time) {
