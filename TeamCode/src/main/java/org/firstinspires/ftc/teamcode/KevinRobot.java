@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -80,6 +81,7 @@ public class KevinRobot {
         fleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 //        sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 //        shooter = hardwareMap.get(DcMotorEx.class, "shooter");

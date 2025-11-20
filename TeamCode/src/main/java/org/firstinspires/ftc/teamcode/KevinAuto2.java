@@ -22,6 +22,7 @@ public class KevinAuto2 extends LinearOpMode {
         //This is the actual auto
         robot.drivingForwardMM(2267,.5);
         robot.turnBy(-67, 0.5);
+        robot.streftAndStrightMM(-300, 0.3);
     }
 
     public void waitTime (int time) {
