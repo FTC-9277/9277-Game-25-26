@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 //  if (code not work) work;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "TestBlueFrontAuto")
-public class KevinsAuto extends LinearOpMode {
+@Autonomous(name = "TestRedFrontAuto")
+public class KevinsAuto3 extends LinearOpMode {
 
     KevinRobot robot;
 //Benjamin Benjamin the god of CAD
@@ -21,10 +20,10 @@ public class KevinsAuto extends LinearOpMode {
 
         //This is the actual auto
         robot.drivingForwardMM(60,0.25);
-        robot.streftAndStrightMM(400,0.5);
+        robot.streftAndStrightMM(-400,0.5);
         robot.drivingForwardMM(2467,0.5);
-        robot.turnBy(-40,1000);
-        // did this *a
+        robot.turnBy(40,1000);
+        // auto for red back, **untested** *a
         //robot shoot
 
     }
