@@ -221,6 +221,14 @@ public class KevinRobot {
         bleft.setVelocity(0) ;
         bright.setVelocity(0) ;
     }
+    public void setSafePower(DcMotorEx motor, double targetPower ){
+        final double SLEW_RATE = 0.2;
+        double currentPower = motor.getPower();
+
+        double desiredCange = targetPower - currentPower;
+        double limitedChange = Math.max(-SLEW_RATE, Math.min(desiredCange, SLEW_RATE));
+        motor.setPower(currentPower += limitedChange);
+    }
 
 
 //    public int getSorterPosition(){

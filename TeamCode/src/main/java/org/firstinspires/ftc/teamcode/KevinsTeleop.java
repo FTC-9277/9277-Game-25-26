@@ -34,10 +34,10 @@ public class KevinsTeleop extends LinearOpMode {
 
 
             if (Math.abs(gamepad1.left_stick_y) >= 0.2 || Math.abs(gamepad1.left_stick_x) >= 0.2 || Math.abs(gamepad1.right_stick_x) >= 0.2) {
-                robot.fleft.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x));
-                robot.fright.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x));
-                robot.bright.setPower(speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x));
-                robot.bleft.setPower(speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x));
+                robot.setSafePower(robot.fleft,speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x));
+                robot.setSafePower(robot.fright,speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x));
+                robot.setSafePower(robot.bright,speed * (-gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x));
+                robot.setSafePower(robot.bleft,speed * (-gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x));
             } else {
                 robot.fleft.setPower(0);
                 robot.fright.setPower(0);
