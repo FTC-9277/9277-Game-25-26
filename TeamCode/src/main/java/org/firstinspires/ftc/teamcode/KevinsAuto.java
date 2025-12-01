@@ -26,6 +26,13 @@ public class KevinsAuto extends LinearOpMode {
         robot.turnBy(-40,1000);
         // did this *a
         //robot shoot
+        for (int i=1; i<=3; i++){
+            robot.turnToPosition(i);
+            robot.shootBall();
+            robot.servoDoor.setPosition(0);
+            waitTime(500);
+            robot.servoDoor.setPosition(.17);
+        }
 
     }
 

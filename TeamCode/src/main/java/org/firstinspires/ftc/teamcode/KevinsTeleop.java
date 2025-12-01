@@ -46,52 +46,52 @@ public class KevinsTeleop extends LinearOpMode {
             }
 
 
-//            // intake mech
-//            double intakeSpeed = 0;
-//            if (gamepad2.right_bumper) {
-//                intakeSpeed += 1;
-//            }
-//            if (gamepad2.left_bumper) {
-//                intakeSpeed -= 1;
-//            }
-//            servo.setPower(intakeSpeed);
+            // intake mech
+            double intakeSpeed = 0;
+            if (gamepad2.right_bumper) {
+                intakeSpeed += 1;
+            }
+            if (gamepad2.left_bumper) {
+                intakeSpeed -= 1;
+            }
+           // servo.setPower(intakeSpeed);
 
 
 
-//            if (gamepad2.right_bumper) {
-//                robot.servoDoor.setPosition(0);
-//              }  else {
-//                robot.servoDoor.setPosition(.17);
-//            }
-//
-//            if (gamepad2.left_bumper){
-//                robot.shootBall();
-//            } else {
-//                robot.shooter.setVelocity(0);
-//                robot.shooter2.setVelocity(0);
-//                robot.time.reset();
-//            }
-//
-//            if (gamepad2.xWasPressed()) {
-//                robot.turnToPosition((robot.getSorterPosition()+1) % 3);
-////                robot.sorter.setTargetPosition(20);
-//
-//            }
-//
-//            if (gamepad2.dpadDownWasPressed()){
-//                robot.adjustSorterDown();
-//            }
-//
-//            if (gamepad2.dpadUpWasPressed()){
-//                robot.adjustSorterUp();
-//            }
-//
-//            //if (gamepad2.bWasPressed()){
-//               // robot.emergencyButtonPressed=true;
-//           //
-//
-//            telemetry.addData("target position", robot.sorter.getTargetPosition());
-//            telemetry.addData("current position", robot.sorter.getCurrentPosition());
+            if (gamepad2.right_bumper) {
+                robot.servoDoor.setPosition(0);
+              }  else {
+                robot.servoDoor.setPosition(.17);
+            }
+
+            if (gamepad2.left_bumper){
+                robot.shootBall();
+            } else {
+                robot.shooter.setVelocity(0);
+                robot.shooter2.setVelocity(0);
+                robot.time.reset();
+            }
+
+            if (gamepad2.xWasPressed()) {
+                robot.turnToPosition((robot.getSorterPosition()+1) % 3);
+//                robot.sorter.setTargetPosition(20);
+
+            }
+
+            if (gamepad2.dpadDownWasPressed()){
+                robot.adjustSorterDown();
+            }
+
+            if (gamepad2.dpadUpWasPressed()){
+                robot.adjustSorterUp();
+            }
+
+            //if (gamepad2.bWasPressed()){
+               // robot.emergencyButtonPressed=true;
+           //
+
+            telemetry.addData("target position", robot.sorter.getTargetPosition());
+            telemetry.addData("current position", robot.sorter.getCurrentPosition());
 
             telemetry.update();
 
