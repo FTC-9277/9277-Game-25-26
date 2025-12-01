@@ -19,9 +19,9 @@ public class KevinAuto4 extends LinearOpMode {
         waitForStart();
 
         //This is the actual auto
-        robot.drivingForwardMM(1367,.5);
-        robot.turnBy(-160, 1000);
-        robot.streftAndStrightMM(-55, 0.3);
+        robot.drivingForwardMM(1000,.5);
+        robot.turnBy(-132.67, 1000);
+    //    robot.streftAndStrightMM(-55, 0.3);
     } // red auto for on goal *a
 
     public void waitTime (int time) {

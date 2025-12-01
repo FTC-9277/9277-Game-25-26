@@ -20,9 +20,9 @@ public class KevinsAuto extends LinearOpMode {
         waitForStart();
 
         //This is the actual auto
-        robot.drivingForwardMM(60,0.25);
-        robot.streftAndStrightMM(400,0.5);
-        robot.drivingForwardMM(2467,0.5);
+        //robot.drivingForwardMM(60,0.25);
+        //robot.streftAndStrightMM(400,0.5);
+        robot.drivingForwardMM(2527,0.5);
         robot.turnBy(-40,1000);
         // did this *a
         //robot shoot
