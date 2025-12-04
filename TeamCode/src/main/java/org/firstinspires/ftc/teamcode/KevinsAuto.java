@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 //  if (code not work) work;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -26,8 +25,10 @@ public class KevinsAuto extends LinearOpMode {
         robot.turnBy(-40,1000);
         // did this *a
         //robot shoot
-        for (int i=1; i<=3; i++){
-            robot.turnToPosition(i);
+        //It is i Kevin Kevin, doing an MML
+        //On every single question, I always seem to sell
+        for (int i = 1; i <=3; i++){
+            robot.turnToPosition(i); //<--- Kevin Kevin is right here
             robot.shootBall();
             robot.servoDoor.setPosition(0);
             waitTime(500);

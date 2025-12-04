@@ -59,7 +59,7 @@ public class KevinRobot {
         bleft = hardwareMap.get(DcMotorEx.class, "bleft");
         sorter = hardwareMap.get(DcMotorEx.class, "sorter");
         servoDoor = hardwareMap.get(Servo.class, "servo");
-        servoDoor.setPosition(.17);
+        servoDoor.setPosition(0.05);
         bleft.setDirection(DcMotorEx.Direction.REVERSE);
         fleft.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -250,14 +250,14 @@ public class KevinRobot {
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
         sorter.setTargetPosition(sorter.getCurrentPosition()-15);
         sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        sorter.setPower(0.1);
+        sorter.setPower(0.67);
     }
 
     public void adjustSorterUp(){
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
         sorter.setTargetPosition(sorter.getCurrentPosition()+15);
         sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        sorter.setPower(0.1);
+        sorter.setPower(0.67);
     }
 
     public void turnToPosition(int goalPosition){
@@ -295,7 +295,7 @@ public class KevinRobot {
         //waits for motor to move to the position
         int count = 0;
 //        while (getSorterPosition()!=goalPosition && opMode.opModeIsActive()){
-        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 5 && opMode.opModeIsActive()){
+        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 3 && opMode.opModeIsActive()){
             opMode.telemetry.addData("get sorter position", getSorterPosition());
             opMode.telemetry.addData("get goal position", goalPosition);
             opMode.telemetry.addData("target position", sorter.getTargetPosition());

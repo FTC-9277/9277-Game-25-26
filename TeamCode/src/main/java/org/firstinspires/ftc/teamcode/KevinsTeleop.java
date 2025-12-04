@@ -46,22 +46,22 @@ public class KevinsTeleop extends LinearOpMode {
             }
 
 
-            // intake mech
-            double intakeSpeed = 0;
-            if (gamepad2.right_bumper) {
-                intakeSpeed += 1;
-            }
-            if (gamepad2.left_bumper) {
-                intakeSpeed -= 1;
-            }
-           // servo.setPower(intakeSpeed);
+//            // intake mech
+//            double intakeSpeed = 0;
+//            if (gamepad2.right_bumper) {
+//                intakeSpeed += 1;
+//            }
+//            if (gamepad2.left_bumper) {
+//                intakeSpeed -= 1;
+//            }
+//           // servo.setPower(intakeSpeed);
 
 
 
             if (gamepad2.right_bumper) {
-                robot.servoDoor.setPosition(0);
+                robot.servoDoor.setPosition(0.18);
               }  else {
-                robot.servoDoor.setPosition(.17);
+                robot.servoDoor.setPosition(0.05);
             }
 
             if (gamepad2.left_bumper){
