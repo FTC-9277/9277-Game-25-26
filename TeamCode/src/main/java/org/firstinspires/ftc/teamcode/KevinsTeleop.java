@@ -45,6 +45,12 @@ public class KevinsTeleop extends LinearOpMode {
                 robot.bleft.setPower(0);
             }
 
+            if (Math.abs(gamepad2.right_stick_y) >= 0.2){
+                robot.sorter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.sorter.setPower(-gamepad2.right_stick_y/4);
+            }else {
+                robot.sorter.setPower(0);
+            }
 
 //            // intake mech
 //            double intakeSpeed = 0;
@@ -78,21 +84,30 @@ public class KevinsTeleop extends LinearOpMode {
 
             }
 
-            if (gamepad2.dpadDownWasPressed()){
+            if (gamepad2.dpad_down){
                 robot.adjustSorterDown();
             }
 
-            if (gamepad2.dpadUpWasPressed()){
+            if (gamepad2.dpad_up){
                 robot.adjustSorterUp();
             }
 
-            //if (gamepad2.bWasPressed()){
-               // robot.emergencyButtonPressed=true;
-           //
+            if (gamepad1.left_bumper){
+                robot.maxLaunchSpeed=1075;
+            }
+            if (Math.abs(gamepad1.left_trigger) >= .2){
+                robot.maxLaunchSpeed=1275;
+            }
+
+//
+//            if (gamepad2.bWasPressed()){
+//                robot.emergencyButtonPressed=true;
+//           }
 
             telemetry.addData("target position", robot.sorter.getTargetPosition());
             telemetry.addData("current position", robot.sorter.getCurrentPosition());
-
+            telemetry.addData("PID", robot.sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("Max Launch Speed", robot.maxLaunchSpeed);
             telemetry.update();
 
         }

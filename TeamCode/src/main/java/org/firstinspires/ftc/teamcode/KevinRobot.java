@@ -36,7 +36,7 @@ public class KevinRobot {
 
     final int SEC_TO_SHOOTER_SPEED = 4;
    // Not constant because auto and teleop use different speeds
-    int maxLaunchSpeed = 1175;
+    int maxLaunchSpeed = 1075;
 
     public ElapsedTime time = new ElapsedTime();
 
@@ -248,16 +248,32 @@ public class KevinRobot {
 
     public void adjustSorterDown(){
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
-        sorter.setTargetPosition(sorter.getCurrentPosition()-15);
-        sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        sorter.setPower(0.67);
+
+            sorter.setTargetPosition(sorter.getCurrentPosition()-15);
+            sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            sorter.setPower(0.3);
+
     }
+
+//    public void adjustSorterDown(){
+////        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
+//        for ( int i = 0; i < 8; i++) {
+//            sorter.setTargetPosition(sorter.getCurrentPosition()-15*i);
+//
+//            sorter.setPower(0.3);
+//            if (opMode.gamepad2.dpadDownWasReleased()){
+//                break;
+//            }
+//        }
+//    }
+
 
     public void adjustSorterUp(){
 //        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
-        sorter.setTargetPosition(sorter.getCurrentPosition()+15);
-        sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        sorter.setPower(0.67);
+            sorter.setTargetPosition(sorter.getCurrentPosition()+15);
+            sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            sorter.setPower(0.3);
+
     }
 
     public void turnToPosition(int goalPosition){
@@ -272,6 +288,8 @@ public class KevinRobot {
 //Kevin kevin's genius is skill, not luck
 //He carries, even though the drivers suck
         // SupremeGod turnCount = KEVIN_KEVIN;
+
+        time.reset();
 
         int ticksToTarget = 0;
         if (getSorterPosition() < goalPosition){
@@ -295,7 +313,7 @@ public class KevinRobot {
         //waits for motor to move to the position
         int count = 0;
 //        while (getSorterPosition()!=goalPosition && opMode.opModeIsActive()){
-        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 3 && opMode.opModeIsActive()){
+        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 2 && opMode.opModeIsActive()){
             opMode.telemetry.addData("get sorter position", getSorterPosition());
             opMode.telemetry.addData("get goal position", goalPosition);
             opMode.telemetry.addData("target position", sorter.getTargetPosition());
@@ -305,6 +323,7 @@ public class KevinRobot {
             opMode.telemetry.addData("angle", (sorter.getCurrentPosition()* SORTER_SCALE_PER_TICK)%360);
             opMode.telemetry.addData("PID", sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             opMode.telemetry.addData("button", opMode.gamepad2.b);
+            opMode.telemetry.addData("time", time.seconds());
 
             opMode.telemetry.update();
             count++;
@@ -313,6 +332,11 @@ public class KevinRobot {
 
                 break;
             }
+//            if (time.seconds() >= 3){
+//
+//                break;
+//            }
+
         }
         opMode.telemetry.addData("completion", ticksToTarget);
         opMode.telemetry.update();
