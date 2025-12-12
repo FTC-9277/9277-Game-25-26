@@ -18,11 +18,15 @@ public class KevinsAuto3 extends LinearOpMode {
         robot = new KevinRobot(hardwareMap, this);
         waitForStart();
 
-        //This is the actual auto
-        robot.drivingForwardMM(60,0.25);
-        robot.streftAndStrightMM(-400,0.5);
-        robot.drivingForwardMM(2467,0.5);
-        robot.turnBy(40,1000);
+
+//        robot.drivingForwardMM(60,0.25);
+//        robot.streftAndStrightMM(-400,0.5);
+//        robot.drivingForwardMM(2467,0.5);
+//        robot.turnBy(40,1000);
+
+        robot.drivingForwardMM(60,.25);
+        robot.autoShoot3Balls();
+        robot.drivingForwardMM(467,.5);
         // auto for red back, **untested** *a
         //robot shoot
 

@@ -16,25 +16,13 @@ public class KevinsAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new KevinRobot(hardwareMap, this);
+        robot.maxLaunchSpeed=1300;
         waitForStart();
-
         //This is the actual auto
-        //robot.drivingForwardMM(60,0.25);
-        //robot.streftAndStrightMM(400,0.5);
-        robot.drivingForwardMM(2527,0.5);
-        robot.turnBy(-40,1000);
-        // did this *a
-        //robot shoot
-        //It is i Kevin Kevin, doing an MML
-        //On every single question, I always seem to sell
-        for (int i = 1; i <=3; i++){
-            robot.turnToPosition(i); //<--- Kevin Kevin is right here
-            robot.shootBall();
-            robot.servoDoor.setPosition(0);
-            waitTime(500);
-            robot.servoDoor.setPosition(.17);
-        }
 
+        robot.drivingForwardMM(60,.25);
+        robot.autoShoot3Balls();
+        robot.drivingForwardMM(467,.5);
     }
 
     public void waitTime (int time) {

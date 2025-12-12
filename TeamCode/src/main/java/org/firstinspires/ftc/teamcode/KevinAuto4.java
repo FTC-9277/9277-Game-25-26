@@ -17,11 +17,19 @@ public class KevinAuto4 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new KevinRobot(hardwareMap, this);
         waitForStart();
+        robot.maxLaunchSpeed=1067;
 
-        //This is the actual auto
-        robot.drivingForwardMM(1000,.5);
-        robot.turnBy(-132.67, 1000);
+//        robot.drivingForwardMM(1000,.5);
+//        robot.turnBy(-132.67, 1000);
     //    robot.streftAndStrightMM(-55, 0.3);
+
+        robot.drivingForwardMM(-1367,.5);
+
+        robot.autoShoot3Balls();
+
+        robot.drivingForwardMM(567,.5);
+        robot.streftAndStrightMM(-667,.5);
+
     } // red auto for on goal *a
 
     public void waitTime (int time) {

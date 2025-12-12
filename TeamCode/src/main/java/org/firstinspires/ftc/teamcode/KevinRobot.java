@@ -238,9 +238,9 @@ public class KevinRobot {
 
         //if less than 120 will be 1
         //it is already 1
-        if (degree > 120 && degree <= 240) {
+        if (degree > 115 && degree <= 230) {
             ballPosition = 2;
-        } else if (degree > 240 && degree <= 360) {
+        } else if (degree > 230 & degree <= 360) {
             ballPosition = 3;
         }
         return ballPosition;
@@ -298,8 +298,9 @@ public class KevinRobot {
             ticksToTarget = (goalPosition+3-getSorterPosition());
         }
         ticksToTarget *= (int) SORTER_TICKS_PER_120_DEG;
+        ticksToTarget += 2;
 
-        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .05, 0,0));
+        sorter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .01, 0,0));
         sorter.setTargetPosition(sorter.getTargetPosition() + ticksToTarget);
         sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         sorter.setPower(0.5);
@@ -313,7 +314,7 @@ public class KevinRobot {
         //waits for motor to move to the position
         int count = 0;
 //        while (getSorterPosition()!=goalPosition && opMode.opModeIsActive()){
-        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 2 && opMode.opModeIsActive()){
+        while (Math.abs(sorter.getTargetPosition()-sorter.getCurrentPosition()) > 7 && opMode.opModeIsActive()){
             opMode.telemetry.addData("get sorter position", getSorterPosition());
             opMode.telemetry.addData("get goal position", goalPosition);
             opMode.telemetry.addData("target position", sorter.getTargetPosition());
@@ -356,6 +357,8 @@ public class KevinRobot {
     }
 
     public void shootBall () {
+//        shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .2, 0,0.5));
+//        shooter2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(20, .2, 0,0.5));
 
         if (time.seconds() <= SEC_TO_SHOOTER_SPEED) {
             opMode.telemetry.addData("slope", (double) (maxLaunchSpeed / SEC_TO_SHOOTER_SPEED));
@@ -390,7 +393,23 @@ public class KevinRobot {
             shooter2.setVelocity(maxLaunchSpeed);
         }
     }
+    public void autoShoot3Balls () {
+        shootBall();
+        waitTime(1567);
+        servoDoor.setPosition(0.2);
 
+        for (int i = 1; i <= 3; i++){
+            waitTime(3067);
+            turnToPosition(i); //<--- Kevin Kevin is right here
+
+            opMode.telemetry.addData("Count", i);
+            opMode.telemetry.update();
+        }
+        waitTime(2067);
+        servoDoor.setPosition(0.05);
+        shooter.setVelocity(0);
+        shooter2.setVelocity(0);
+    }
 
 
 

@@ -65,7 +65,7 @@ public class KevinsTeleop extends LinearOpMode {
 
 
             if (gamepad2.right_bumper) {
-                robot.servoDoor.setPosition(0.18);
+                robot.servoDoor.setPosition(0.2);
               }  else {
                 robot.servoDoor.setPosition(0.05);
             }
@@ -78,11 +78,11 @@ public class KevinsTeleop extends LinearOpMode {
                 robot.time.reset();
             }
 
-            if (gamepad2.xWasPressed()) {
-                robot.turnToPosition((robot.getSorterPosition()+1) % 3);
-//                robot.sorter.setTargetPosition(20);
-
-            }
+//            if (gamepad2.xWasPressed()) {
+//                robot.turnToPosition((robot.getSorterPosition()+1) % 3);
+////                robot.sorter.setTargetPosition(20);
+//
+//            }
 
             if (gamepad2.dpad_down){
                 robot.adjustSorterDown();
@@ -103,10 +103,12 @@ public class KevinsTeleop extends LinearOpMode {
 //            if (gamepad2.bWasPressed()){
 //                robot.emergencyButtonPressed=true;
 //           }
-
+            telemetry.addData("Sorter Num Position", robot.getSorterPosition());
             telemetry.addData("target position", robot.sorter.getTargetPosition());
             telemetry.addData("current position", robot.sorter.getCurrentPosition());
-            telemetry.addData("PID", robot.sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("Shooter PID", robot.shooter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("Shooter2 PID", robot.shooter2.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("Sorter PID", robot.sorter.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Max Launch Speed", robot.maxLaunchSpeed);
             telemetry.update();
 
